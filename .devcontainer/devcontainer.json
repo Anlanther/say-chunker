@@ -1,0 +1,38 @@
+{
+  "name": "say-chunker",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "..",
+  },
+  "runArgs": ["--name", "say-chunker"],
+  "postCreateCommand": "bash -lc 'ln -sfn /home/vscode/dotfiles/.zshrc /home/vscode/.zshrc && ln -sfn /home/vscode/dotfiles/.gitconfig /home/vscode/.gitconfig && git config --global credential.helper store && sudo chown -R vscode:vscode .venv && uv sync'",
+  "remoteUser": "vscode",
+  "mounts": [
+    "source=python-venv,target=${containerWorkspaceFolder}/.venv,type=volume",
+    "source=${localWorkspaceFolder}/../dotfiles,target=/home/vscode/dotfiles,type=bind",
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.pylance",
+        "ms-python.debugpy",
+        "irongeek.vscode-env",
+        "charliermarsh.ruff",
+        "tamasfe.even-better-toml",
+        "kevinrose.vsc-python-indent",
+        "imgildev.vscode-auto-barrel",
+        "streetsidesoftware.code-spell-checker",
+        "eamodio.gitlens",
+        "ms-toolsai.jupyter",
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.terminal.activateEnvironment": true,
+        "editor.formatOnSave": true,
+        "ruff.enable": true,
+        "terminal.integrated.defaultProfile.linux": "zsh",
+      },
+    },
+  },
+}

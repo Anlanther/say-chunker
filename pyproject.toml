@@ -1,0 +1,50 @@
+[project]
+name = "say-chunker"
+version = "0.1.0"
+description = "Local, offline long-form text-to-MP3 audiobook converter using the macOS say engine"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "typer>=0.12.0",
+    "pydantic-settings>=2.3.0",
+    "pymupdf>=1.24.0",
+    "pysbd>=0.3.4",
+    "markdown-it-py>=3.0.0",
+]
+
+[project.scripts]
+tts = "say_chunker.cli:app"
+
+[dependency-groups]
+dev = ["pytest>=8.0", "mypy>=1.10", "ruff>=0.5"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["say_chunker"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unused_configs = true
+exclude = ["tests/"]
+
+[[tool.mypy.overrides]]
+module = ["pysbd"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["pymupdf"]
+follow_imports = "skip"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
